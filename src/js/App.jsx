@@ -13,18 +13,16 @@ import Users from '@/Pages/Users';
 
 ReactDOM.render(
     <Provider store={store}>
-        <div>
-            <Router>
-                <Switch>
-                    <Route path="/posts" component={Posts} />
-                    <Route path="/users" component={Users} />
+        <Router>
+            <Switch>
+                <Route path="/posts" component={Posts} />
+                <Route path="/users" component={Users} />
 
-                    <Route exact path="/">
-                        <Redirect to="/posts" />
-                    </Route>
-                </Switch>
-            </Router>
-        </div>
+                <Route exact path="/">
+                    <Redirect to="/posts" />
+                </Route>
+            </Switch>
+        </Router>
     </Provider>,
     document.getElementById('App')
 );
