@@ -4,7 +4,7 @@
     "main": "index.js",
     "repository": "https://github.com/HerrVoennchen/sample-project.git",
     "author": "Sebastian",
-    "license": "UNLICENSED",
+    "license": "MIT",
     "scripts": {
         "dev": "webpack-dev-server --hot --inline --progress --colors --host 0.0.0.0",
         "dev:deploy": "npm run clean && NODE_DEPLOY=true webpack",
