@@ -2,18 +2,18 @@ import React from 'react';
 
 import Header from '@/Components/Header';
 
-import { connect } from 'react-redux';
-import { fetchPosts } from '@/actions';
+import { connect } from 'redux-zero/react';
+import actions from '@/actions';
 
-class Posts extends React.Component {
+class Posts extends React.PureComponent {
     refreshData = () => {
-        this.props.requestPosts();
+        this.props.fetchPosts();
     };
 
     componentDidMount() {
-        let { posts, requestPosts } = this.props;
+        let { posts, fetchPosts } = this.props;
         if (!posts || posts.length === 0) {
-            requestPosts();
+            fetchPosts();
         }
     }
 
@@ -42,14 +42,9 @@ class Posts extends React.Component {
     }
 }
 
-export default connect(
-    store => {
-        return {
-            isLoading: store.posts.pending,
-            posts: store.posts.data
-        };
-    },
-    {
-        requestPosts: fetchPosts
-    }
-)(Posts);
+export default connect(store => {
+    return {
+        isLoading: store.posts.pending,
+        posts: store.posts.data
+    };
+}, actions)(Posts);

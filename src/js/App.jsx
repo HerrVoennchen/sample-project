@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 
 import { Route, HashRouter as Router, Switch, Redirect } from 'react-router-dom';
 
-import { Provider } from 'react-redux';
+import { Provider } from 'redux-zero/react';
 import store from './store';
 
 import Posts from '@/Pages/Posts';

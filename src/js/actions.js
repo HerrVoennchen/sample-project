@@ -1,34 +1,33 @@
 import axios from 'axios';
 import config from 'config';
-import { REQUEST_POSTS, REQUEST_USERS } from '@/constants';
 
-/// easy way with redux thunk
-export function fetchPosts() {
-    return {
-        type: REQUEST_POSTS,
-        payload: axios.get('https://jsonplaceholder.typicode.com/posts')
-    };
-}
+const actions = store => ({
+    fetchPosts: state => {
+        store.setState({ ...state, posts: { ...state.posts, pending: true } });
 
-export function fetchUsers() {
-    return {
-        type: REQUEST_USERS,
-        payload: new Promise((resolve, reject) => {
-            /// Do some stuff, create objects etc.
+        return axios
+            .get('https://jsonplaceholder.typicode.com/posts')
+            .then(res => res.data)
+            .then(data => {
+                setTimeout(() => store.setState({ ...state, posts: { ...state.posts, pending: false, data: data } }), 1000);
+            })
+            .catch(error => {
+                store.setState({ ...state, posts: { ...state.posts, pending: false, error: error } });
+            });
+    },
+    fetchUsers: state => {
+        store.setState({ ...state, users: { ...state.users, pending: true } });
 
-            axios
-                .get('https://jsonplaceholder.typicode.com/users')
-                .then(response => response.data)
-                .then(data => {
-                    /// all fine here?
-                    /// check check check
+        return axios
+            .get('https://jsonplaceholder.typicode.com/users')
+            .then(res => res.data)
+            .then(data => {
+                setTimeout(() => store.setState({ ...state, users: { ...state.users, pending: false, data: data } }), 1000);
+            })
+            .catch(error => {
+                store.setState({ ...state, users: { ...state.users, pending: false, error: error } });
+            });
+    }
+});
 
-                    resolve(data);
-                })
-                .catch(error => {
-                    console.error('Error while requesting users', error);
-                    reject(error);
-                });
-        })
-    };
-}
+export default actions;

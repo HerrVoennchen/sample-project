@@ -2,18 +2,18 @@ import React from 'react';
 
 import Header from '@/Components/Header';
 
-import { connect } from 'react-redux';
-import { fetchUsers } from '@/actions';
+import { connect } from 'redux-zero/react';
+import actions from '@/actions';
 
-class Users extends React.Component {
+class Users extends React.PureComponent {
     refreshData = () => {
-        this.props.requestUsers();
+        this.props.fetchUsers();
     };
 
     componentDidMount() {
-        let { users, requestUsers } = this.props;
+        let { users, fetchUsers } = this.props;
         if (!users || users.length === 0) {
-            requestUsers();
+            fetchUsers();
         }
     }
 
@@ -42,14 +42,9 @@ class Users extends React.Component {
     }
 }
 
-export default connect(
-    store => {
-        return {
-            isLoading: store.users.pending,
-            users: store.users.data
-        };
-    },
-    {
-        requestUsers: fetchUsers
-    }
-)(Users);
+export default connect(store => {
+    return {
+        isLoading: store.users.pending,
+        users: store.users.data
+    };
+}, actions)(Users);

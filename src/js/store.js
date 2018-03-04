@@ -1,18 +1,21 @@
-import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-
-import thunk from 'redux-thunk';
+import createStore from 'redux-zero';
+import { applyMiddleware } from 'redux-zero/middleware';
+import { connect } from 'redux-zero/devtools';
 import { createLogger } from 'redux-logger';
-import promise from 'redux-promise-middleware';
 
-import reducers from './Reducers';
-import config from 'config';
+const initialState = {
+    posts: {
+        pending: false,
+        data: [],
+        error: undefined
+    },
+    users: {
+        pending: false,
+        data: [],
+        error: undefined
+    }
+};
 
-let middleware = undefined;
-if (config.debug) {
-    middleware = composeWithDevTools(applyMiddleware(promise(), thunk, createLogger()));
-} else {
-    middleware = applyMiddleware(promise(), thunk);
-}
+const middlewares = connect ? applyMiddleware(connect(initialState)) : [];
 
-export default createStore(reducers, middleware);
+export default createStore(initialState, middlewares);
