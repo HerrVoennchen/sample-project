@@ -7,26 +7,28 @@ var WebpackShellPlugin = require('webpack-shell-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var NameAllModulesPlugin = require('name-all-modules-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 var config = {
+    mode: debug ? 'development' : 'production',
     context: __dirname,
     devtool: 'source-map',
     entry: {
-        app: ['./src/js/App.jsx'],
-        vendor: [
-            'babel-polyfill',
-            'react',
-            'react-dom',
-            'react-router',
-            'react-router-dom',
-            'axios',
-            'redux',
-            'redux-devtools-extension',
-            'redux-thunk',
-            'redux-logger',
-            'redux-promise-middleware',
-            'react-redux'
-        ]
+        app: ['./src/js/App.jsx']
+        // vendor: [
+        //     'babel-polyfill',
+        //     'react',
+        //     'react-dom',
+        //     'react-router',
+        //     'react-router-dom',
+        //     'axios',
+        //     'redux',
+        //     'redux-devtools-extension',
+        //     'redux-thunk',
+        //     'redux-logger',
+        //     'redux-promise-middleware',
+        //     'react-redux'
+        // ]
     },
     output: {
         path: path.resolve(__dirname, process.env.NODE_DEPLOY ? 'dist' : 'src'),
@@ -79,22 +81,20 @@ var config = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: { importLoaders: 1, sourceMap: true }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                sourceMap: debug,
-                                plugins: [require('autoprefixer')()]
-                            }
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: { importLoaders: 1, sourceMap: true }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: debug,
+                            plugins: [require('autoprefixer')()]
                         }
-                    ]
-                })
+                    }
+                ]
             },
             {
                 test: /\.(ttf|jpe?g|png|otf|ico|eot|svg|woff|woff2|gif?)(\?\S*)?$/,
@@ -106,17 +106,19 @@ var config = {
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader!less-loader'
-                })
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
             },
             {
                 test: /\.s(a|c)ss$/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader!resolve-url-loader!sass-loader?sourceMap'
-                })
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'resolve-url-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: { sourceMap: true }
+                    }
+                ]
             }
         ]
     },
@@ -128,29 +130,29 @@ var config = {
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default']
         }),
-        new webpack.NamedModulesPlugin(),
-        new webpack.NamedChunksPlugin(chunk => {
-            if (chunk.name) {
-                return chunk.name;
-            }
+        // new webpack.NamedModulesPlugin(),
+        // new webpack.NamedChunksPlugin(chunk => {
+        //     if (chunk.name) {
+        //         return chunk.name;
+        //     }
 
-            return chunk.mapModules(m => path.relative(m.context, m.request)).join('_');
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: Infinity
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'runtime'
-        }),
-        new NameAllModulesPlugin(),
+        //     return chunk.mapModules(m => path.relative(m.context, m.request)).join('_');
+        // }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor',
+        //     minChunks: Infinity
+        // }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'runtime'
+        // }),
+        // new NameAllModulesPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             xhtml: true
         }),
-        new ExtractTextPlugin({
-            filename: 'app.bundle.css',
-            allChunks: true
+        new MiniCssExtractPlugin({
+            filename: 'app.bundle.css'
+            // allChunks: true
         })
     ],
     devServer: {
