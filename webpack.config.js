@@ -9,6 +9,9 @@ var NameAllModulesPlugin = require('name-all-modules-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+console.log('debug', debug);
+
 var config = {
     mode: debug ? 'development' : 'production',
     context: __dirname,
