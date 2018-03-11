@@ -146,7 +146,8 @@ var config = {
         }),
         new MiniCssExtractPlugin({
             filename: '[name].bundle.css'
-        })
+        }),
+        new webpack.optimize.ModuleConcatenationPlugin()
     ],
     devServer: {
         contentBase: 'src',
@@ -160,8 +161,6 @@ if (debug) {
             files: ['./src/**/*.html', './src/**/*.css', './src/**/*.less', './src/**/*.scss']
         })
     );
-
-    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
 } else {
     config.plugins.push(
         new OptimizeCssAssetsPlugin({
