@@ -1,37 +1,38 @@
 var debug = process.env.NODE_ENV !== 'production';
 var webpack = require('webpack');
 var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WatchLiveReloadPlugin = require('webpack-watch-livereload-plugin');
 var WebpackShellPlugin = require('webpack-shell-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-var NameAllModulesPlugin = require('name-all-modules-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-console.log('debug', debug);
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+console.log('debug mode: ', debug);
 
 var config = {
     mode: debug ? 'development' : 'production',
     context: __dirname,
     devtool: 'source-map',
-    entry: {
-        app: ['./src/js/App.jsx']
-        // vendor: [
-        //     'babel-polyfill',
-        //     'react',
-        //     'react-dom',
-        //     'react-router',
-        //     'react-router-dom',
-        //     'axios',
-        //     'redux',
-        //     'redux-devtools-extension',
-        //     'redux-thunk',
-        //     'redux-logger',
-        //     'redux-promise-middleware',
-        //     'react-redux'
-        // ]
+    entry: './src/js/App.jsx',
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    chunks: 'initial',
+                    minChunks: 2,
+                    maxInitialRequests: 5, // The default limit is too small to showcase the effect
+                    minSize: 0 // This is example is too small to create commons chunks
+                },
+                vendor: {
+                    test: /node_modules/,
+                    chunks: 'initial',
+                    name: 'vendor',
+                    priority: 10,
+                    enforce: true
+                }
+            }
+        }
     },
     output: {
         path: path.resolve(__dirname, process.env.NODE_DEPLOY ? 'dist' : 'src'),
@@ -107,10 +108,10 @@ var config = {
                 test: /\.html?$/,
                 loader: 'html-loader'
             },
-            {
-                test: /\.less$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
-            },
+            // {
+            //     test: /\.less$/,
+            //     use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
+            // },
             {
                 test: /\.s(a|c)ss$/,
                 use: [
@@ -133,29 +134,12 @@ var config = {
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default']
         }),
-        // new webpack.NamedModulesPlugin(),
-        // new webpack.NamedChunksPlugin(chunk => {
-        //     if (chunk.name) {
-        //         return chunk.name;
-        //     }
-
-        //     return chunk.mapModules(m => path.relative(m.context, m.request)).join('_');
-        // }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor',
-        //     minChunks: Infinity
-        // }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'runtime'
-        // }),
-        // new NameAllModulesPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             xhtml: true
         }),
         new MiniCssExtractPlugin({
             filename: 'app.bundle.css'
-            // allChunks: true
         })
     ],
     devServer: {
