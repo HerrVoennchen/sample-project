@@ -24,7 +24,7 @@ var config = {
     optimization: {
         splitChunks: {
             cacheGroups: {
-                commons: {
+                app: {
                     chunks: 'initial',
                     minChunks: 2,
                     maxInitialRequests: 5, // The default limit is too small to showcase the effect
@@ -145,9 +145,8 @@ var config = {
             xhtml: true
         }),
         new MiniCssExtractPlugin({
-            filename: 'app.bundle.css'
-        }),
-        new webpack.optimize.ModuleConcatenationPlugin()
+            filename: '[name].bundle.css'
+        })
     ],
     devServer: {
         contentBase: 'src',
@@ -162,51 +161,7 @@ if (debug) {
         })
     );
 
-    // config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-} else {
-    // config.plugins.push(
-    //     new webpack.DefinePlugin({
-    //         'process.env': {
-    //             NODE_ENV: JSON.stringify('production')
-    //         }
-    //     })
-    // );
-    // config.plugins.push(
-    //     new webpack.optimize.UglifyJsPlugin({
-    //         sourceMap: true,
-    //         parallel: true,
-    //         uglifyOptions: {
-    //             //mangle: false,
-    //             compress: {
-    //                 warnings: false
-    //             },
-    //             minimize: true
-    //         }
-    //     })
-    // );
-    // config.plugins.push(
-    //     new OptimizeCssAssetsPlugin({
-    //         assetNameRegExp: /\.css$/g,
-    //         cssProcessor: require('cssnano'),
-    //         cssProcessorOptions: {
-    //             discardComments: { removeAll: true },
-    //             colormin: true,
-    //             discardDuplicates: true,
-    //             discardOverridden: true,
-    //             mergeLonghand: true,
-    //             minifyFontValues: true,
-    //             orderedValues: true,
-    //             reduceDisplayValues: true,
-    //             reduceInitial: true,
-    //             uniqueSelectors: true,
-    //             discardUnused: true,
-    //             minifyGradients: true,
-    //             minifySelectors: true,
-    //             svgo: true
-    //         },
-    //         canPrint: true
-    //     })
-    // );
+    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
 }
 
 /*
