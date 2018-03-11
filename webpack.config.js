@@ -1,4 +1,3 @@
-var debug = process.env.NODE_ENV !== 'production';
 var webpack = require('webpack');
 var path = require('path');
 var WatchLiveReloadPlugin = require('webpack-watch-livereload-plugin');
@@ -7,14 +6,21 @@ var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+const debug = (process.env.NODE_ENV || '').trim() !== 'production';
+const deploy = process.env.NODE_DEPLOY !== undefined;
+
+console.log('#####################');
 console.log('debug mode: ', debug);
+console.log('deploy mode: ', deploy);
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+console.log('process.env.NODE_DEPLOY: ', process.env.NODE_DEPLOY);
+console.log('#####################');
 
 var config = {
     mode: debug ? 'development' : 'production',
     context: __dirname,
     devtool: 'source-map',
-    entry: './src/js/App.jsx',
+    entry: { app: './src/js/App.jsx' },
     optimization: {
         splitChunks: {
             cacheGroups: {
@@ -35,7 +41,7 @@ var config = {
         }
     },
     output: {
-        path: path.resolve(__dirname, process.env.NODE_DEPLOY ? 'dist' : 'src'),
+        path: path.resolve(__dirname, deploy ? 'dist' : 'src'),
         filename: debug ? '[name].[hash].js' : '[name].[chunkhash].js'
     },
     resolve: {
@@ -205,7 +211,7 @@ if (debug) {
 }
 
 /*
-if (process.env.NODE_DEPLOY) {
+if (deploy) {
     config.plugins.push(
         new WebpackShellPlugin({
             onBuildEnd: 'node copyFilesToDist.js'
