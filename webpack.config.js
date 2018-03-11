@@ -162,6 +162,30 @@ if (debug) {
     );
 
     config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+} else {
+    config.plugins.push(
+        new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.css$/g,
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: {
+                discardComments: { removeAll: true },
+                colormin: true,
+                discardDuplicates: true,
+                discardOverridden: true,
+                mergeLonghand: true,
+                minifyFontValues: true,
+                orderedValues: true,
+                reduceDisplayValues: true,
+                reduceInitial: true,
+                uniqueSelectors: true,
+                discardUnused: true,
+                minifyGradients: true,
+                minifySelectors: true,
+                svgo: true
+            },
+            canPrint: true
+        })
+    );
 }
 
 /*
