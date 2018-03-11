@@ -1,4 +1,5 @@
 import React from 'react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import Header from '@/Components/Header';
 
@@ -30,7 +31,9 @@ class Posts extends React.Component {
             <Header key="header" />,
             <div key="content">
                 <h1>Posts</h1>
-                <button onClick={this.refreshData}>refresh</button>
+                <button onClick={this.refreshData}>
+                    <FontAwesomeIcon icon="sync" size="xs" fixedWidth />
+                </button>
                 {isLoading && (
                     <ul>
                         <li>loading ...</li>
