@@ -6,11 +6,13 @@ import ReactDOM from 'react-dom';
 import { Route, HashRouter as Router, Switch, Redirect } from 'react-router-dom';
 
 import fontawesome from '@fortawesome/fontawesome';
-import brands from '@fortawesome/fontawesome-free-brands';
-import fas from '@fortawesome/fontawesome-free-solid';
-import far from '@fortawesome/fontawesome-free-regular';
+// import brands from '@fortawesome/fontawesome-free-brands';
+import faSync from '@fortawesome/fontawesome-free-solid/faSync';
+import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
+import faClone from '@fortawesome/fontawesome-free-solid/faClone';
+// import far from '@fortawesome/fontawesome-free-regular';
 
-fontawesome.library.add(brands, fas, far);
+fontawesome.library.add(sy, users, clone);
 
 import { Provider } from 'react-redux';
 import store from './store';

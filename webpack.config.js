@@ -22,6 +22,9 @@ var config = {
     devtool: 'source-map',
     entry: { app: './src/js/App.jsx' },
     optimization: {
+        usedExports: true,
+        concatenateModules: true,
+        occurrenceOrder: true,
         splitChunks: {
             cacheGroups: {
                 app: {
@@ -56,6 +59,10 @@ var config = {
     },
     externals: {
         config: 'config'
+    },
+    performance: {
+        // maxEntrypointSize: 400000,
+        hints: false
     },
     module: {
         rules: [
@@ -146,8 +153,7 @@ var config = {
         }),
         new MiniCssExtractPlugin({
             filename: '[name].bundle.css'
-        }),
-        new webpack.optimize.ModuleConcatenationPlugin()
+        })
     ],
     devServer: {
         contentBase: 'src',
