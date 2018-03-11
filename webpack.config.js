@@ -41,7 +41,7 @@ var config = {
         }
     },
     output: {
-        path: path.resolve(__dirname, deploy ? 'dist' : 'src'),
+        path: path.resolve(__dirname, deploy || !debug ? 'dist' : 'src'),
         filename: debug ? '[name].[hash].js' : '[name].[chunkhash].js'
     },
     resolve: {
@@ -146,7 +146,8 @@ var config = {
         }),
         new MiniCssExtractPlugin({
             filename: 'app.bundle.css'
-        })
+        }),
+        new webpack.optimize.ModuleConcatenationPlugin()
     ],
     devServer: {
         contentBase: 'src',
@@ -161,53 +162,51 @@ if (debug) {
         })
     );
 
-    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+    // config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
 } else {
-    config.plugins.push(
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production')
-            }
-        })
-    );
-
-    config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            parallel: true,
-            uglifyOptions: {
-                //mangle: false,
-                compress: {
-                    warnings: false
-                },
-                minimize: true
-            }
-        })
-    );
-
-    config.plugins.push(
-        new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.css$/g,
-            cssProcessor: require('cssnano'),
-            cssProcessorOptions: {
-                discardComments: { removeAll: true },
-                colormin: true,
-                discardDuplicates: true,
-                discardOverridden: true,
-                mergeLonghand: true,
-                minifyFontValues: true,
-                orderedValues: true,
-                reduceDisplayValues: true,
-                reduceInitial: true,
-                uniqueSelectors: true,
-                discardUnused: true,
-                minifyGradients: true,
-                minifySelectors: true,
-                svgo: true
-            },
-            canPrint: true
-        })
-    );
+    // config.plugins.push(
+    //     new webpack.DefinePlugin({
+    //         'process.env': {
+    //             NODE_ENV: JSON.stringify('production')
+    //         }
+    //     })
+    // );
+    // config.plugins.push(
+    //     new webpack.optimize.UglifyJsPlugin({
+    //         sourceMap: true,
+    //         parallel: true,
+    //         uglifyOptions: {
+    //             //mangle: false,
+    //             compress: {
+    //                 warnings: false
+    //             },
+    //             minimize: true
+    //         }
+    //     })
+    // );
+    // config.plugins.push(
+    //     new OptimizeCssAssetsPlugin({
+    //         assetNameRegExp: /\.css$/g,
+    //         cssProcessor: require('cssnano'),
+    //         cssProcessorOptions: {
+    //             discardComments: { removeAll: true },
+    //             colormin: true,
+    //             discardDuplicates: true,
+    //             discardOverridden: true,
+    //             mergeLonghand: true,
+    //             minifyFontValues: true,
+    //             orderedValues: true,
+    //             reduceDisplayValues: true,
+    //             reduceInitial: true,
+    //             uniqueSelectors: true,
+    //             discardUnused: true,
+    //             minifyGradients: true,
+    //             minifySelectors: true,
+    //             svgo: true
+    //         },
+    //         canPrint: true
+    //     })
+    // );
 }
 
 /*
