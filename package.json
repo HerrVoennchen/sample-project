@@ -8,10 +8,8 @@
     "scripts": {
         "dev": "webpack-dev-server --hot --inline --progress --colors --host 0.0.0.0",
         "dev:deploy": "npm run clean && set NODE_DEPLOY=true && webpack",
-        "prod:deploy": "npm run clean && set NODE_DEPLOY=true && npm run prod",
-        "prod": "set NODE_ENV=production && webpack",
+        "prod:deploy": "npm run clean && set NODE_DEPLOY=true && set NODE_ENV=production && webpack",
         "clean": "rimraf -rf dist/*",
-        "test": "jest",
         "pretty": "prettier --tab-width 4 --single-quote --write '{src,__{tests,mocks}__}/**/*.{js,jsx,css,less,scss}'"
     },
     "devDependencies": {
