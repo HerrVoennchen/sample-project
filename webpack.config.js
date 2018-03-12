@@ -9,12 +9,12 @@ var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const debug = (process.env.NODE_ENV || '').trim() !== 'production';
 const deploy = process.env.NODE_DEPLOY !== undefined;
 
-console.log('#####################');
+console.log('## Webpack 4 ###################');
 console.log('debug mode: ', debug);
 console.log('deploy mode: ', deploy);
 console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
 console.log('process.env.NODE_DEPLOY: ', process.env.NODE_DEPLOY);
-console.log('#####################');
+console.log('################################');
 
 var config = {
     mode: debug ? 'development' : 'production',
