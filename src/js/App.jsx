@@ -12,7 +12,7 @@ import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
 import faClone from '@fortawesome/fontawesome-free-solid/faClone';
 // import far from '@fortawesome/fontawesome-free-regular';
 
-fontawesome.library.add(sy, users, clone);
+fontawesome.library.add(faSync, faUsers, faClone);
 
 import { Provider } from 'react-redux';
 import store from './store';
