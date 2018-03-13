@@ -56,7 +56,7 @@ var config = {
                             'env',
                             {
                                 targets: {
-                                    browsers: ['last 2 versions']
+                                    browsers: ['chrome >= 54', 'firefox >= 50', 'edge > 1', 'safari >= 10', 'ie >= 11']
                                 },
                                 loose: true,
                                 modules: false,
