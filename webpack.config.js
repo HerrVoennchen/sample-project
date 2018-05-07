@@ -17,6 +17,7 @@ console.log('process.env.NODE_DEPLOY: ', process.env.NODE_DEPLOY);
 console.log('################################');
 
 var config = {
+    // cache: false,
     mode: debug ? 'development' : 'production',
     context: __dirname,
     devtool: 'source-map',
