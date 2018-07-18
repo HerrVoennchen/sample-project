@@ -31,7 +31,7 @@ class Users extends React.Component {
             <Header key="header" />,
             <div key="content">
                 <h1>Users</h1>
-                <button onClick={this.refreshData}>
+                <button className="btn" onClick={this.refreshData}>
                     <FontAwesomeIcon icon="sync" size="xs" fixedWidth />
                 </button>
                 {isLoading && (
