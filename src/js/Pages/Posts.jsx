@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Header from '@/Components/Header';
+import Loading from '@/Components/Loading';
 
 import { connect } from 'react-redux';
 import { fetchPosts } from '@/actions';
@@ -34,11 +35,7 @@ class Posts extends React.Component {
                 <button onClick={this.refreshData}>
                     <FontAwesomeIcon icon="sync" size="xs" fixedWidth />
                 </button>
-                {isLoading && (
-                    <ul>
-                        <li>loading ...</li>
-                    </ul>
-                )}
+                {isLoading && <Loading />}
                 {!isLoading && content}
             </div>
         ];

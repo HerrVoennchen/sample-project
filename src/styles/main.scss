@@ -1,23 +1,7 @@
 @import '../../node_modules/normalize.css/normalize.css';
 
-$body-bg: #f0f0f0;
-
-$blue: #0073c6;
-$hover-color: #c7e0f4;
-
-$enable-rounded: false;
-$enable-shadows: true;
-$enable-gradients: true;
-//$breadcrumb-divider: quote('|');
-
-$font-size-base: 0.9rem;
-
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol';
-$font-family-base: $font-family-sans-serif;
-
-// Bootstrap and its default variables
-@import '../../node_modules/bootstrap/scss/bootstrap';
+@import './myBootstrap.scss';
+@import './loading.scss';
 
 body {
     -webkit-font-smoothing: antialiased;
@@ -27,6 +11,10 @@ body {
     background-color: #eee;
 }
 
-.fa-ul > li {
-    margin: 1em;
+.center-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    color: $hover-color;
 }
