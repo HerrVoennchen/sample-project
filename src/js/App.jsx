@@ -7,14 +7,13 @@ import { Route, HashRouter as Router, Switch, Redirect } from 'react-router-dom'
 
 import 'bootstrap';
 
-import fontawesome from '@fortawesome/fontawesome';
-// import brands from '@fortawesome/fontawesome-free-brands';
-import faSync from '@fortawesome/fontawesome-free-solid/faSync';
-import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
-import faClone from '@fortawesome/fontawesome-free-solid/faClone';
-// import far from '@fortawesome/fontawesome-free-regular';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
-fontawesome.library.add(faSync, faUsers, faClone);
+import { library } from '@fortawesome/fontawesome-svg-core';
+
+library.add(fab, fas, far);
 
 import { Provider } from 'react-redux';
 import store from './store';
