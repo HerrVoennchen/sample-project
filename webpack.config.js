@@ -21,7 +21,7 @@ var config = {
     mode: debug ? 'development' : 'production',
     context: __dirname,
     devtool: 'source-map',
-    entry: { app: './src/js/App.jsx' },
+    entry: { app: ['@babel/polyfill', './src/js/App.jsx'] },
     optimization: {
         usedExports: true,
         concatenateModules: true,
@@ -70,30 +70,6 @@ var config = {
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
-                options: {
-                    presets: [
-                        [
-                            'env',
-                            {
-                                targets: {
-                                    browsers: ['chrome >= 54', 'firefox >= 50', 'edge > 1', 'safari >= 10', 'ie >= 11']
-                                },
-                                loose: true,
-                                modules: false,
-                                useBuiltIns: true,
-                                debug: false
-                            }
-                        ],
-                        'react',
-                        'stage-3'
-                    ],
-                    plugins: [
-                        'transform-runtime',
-                        'react-html-attrs',
-                        'transform-decorators-legacy',
-                        'transform-class-properties'
-                    ].concat(debug ? [] : ['transform-react-inline-elements'])
-                },
                 include: [path.resolve(__dirname, 'src')],
                 exclude: [/node_modules/]
             },
