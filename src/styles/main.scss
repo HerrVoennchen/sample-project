@@ -1,6 +1,20 @@
 @import '../../node_modules/normalize.css/normalize.css';
 
+@import './myBootstrap.scss';
+@import './loading.scss';
+
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    margin: 1em;
+
+    background-color: #eee;
+}
+
+.center-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    color: $hover-color;
 }

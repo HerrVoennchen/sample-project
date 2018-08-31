@@ -1,6 +1,8 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Header from '@/Components/Header';
+import Loading from '@/Components/Loading';
 
 import { connect } from 'react-redux';
 import { fetchUsers } from '@/actions';
@@ -30,12 +32,10 @@ class Users extends React.Component {
             <Header key="header" />,
             <div key="content">
                 <h1>Users</h1>
-                <button onClick={this.refreshData}>refresh</button>
-                {isLoading && (
-                    <ul>
-                        <li>loading ...</li>
-                    </ul>
-                )}
+                <button className="btn" onClick={this.refreshData}>
+                    <FontAwesomeIcon icon="sync" size="xs" fixedWidth />
+                </button>
+                {isLoading && <Loading />}
                 {!isLoading && content}
             </div>
         ];

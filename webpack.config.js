@@ -1,35 +1,51 @@
-var debug = process.env.NODE_ENV !== 'production';
 var webpack = require('webpack');
 var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WatchLiveReloadPlugin = require('webpack-watch-livereload-plugin');
 var WebpackShellPlugin = require('webpack-shell-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-var NameAllModulesPlugin = require('name-all-modules-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const debug = (process.env.NODE_ENV || '').trim() !== 'production';
+const deploy = process.env.NODE_DEPLOY !== undefined;
+
+console.log('## Webpack 4 ###################');
+console.log('debug mode: ', debug);
+console.log('deploy mode: ', deploy);
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+console.log('process.env.NODE_DEPLOY: ', process.env.NODE_DEPLOY);
+console.log('################################');
 
 var config = {
+    // cache: false,
+    mode: debug ? 'development' : 'production',
     context: __dirname,
     devtool: 'source-map',
-    entry: {
-        app: ['./src/js/App.jsx'],
-        vendor: [
-            'babel-polyfill',
-            'react',
-            'react-dom',
-            'react-router',
-            'react-router-dom',
-            'axios',
-            'redux',
-            'redux-devtools-extension',
-            'redux-thunk',
-            'redux-logger',
-            'redux-promise-middleware',
-            'react-redux'
-        ]
+    entry: { app: ['@babel/polyfill', './src/js/App.jsx'] },
+    optimization: {
+        usedExports: true,
+        concatenateModules: true,
+        occurrenceOrder: true,
+        splitChunks: {
+            cacheGroups: {
+                app: {
+                    chunks: 'initial',
+                    minChunks: 2,
+                    maxInitialRequests: 5, // The default limit is too small to showcase the effect
+                    minSize: 0 // This is example is too small to create commons chunks
+                },
+                vendor: {
+                    test: /node_modules/,
+                    chunks: 'initial',
+                    name: 'vendor',
+                    priority: 10,
+                    enforce: true
+                }
+            }
+        }
     },
     output: {
-        path: path.resolve(__dirname, process.env.NODE_DEPLOY ? 'dist' : 'src'),
+        path: path.resolve(__dirname, deploy || !debug ? 'dist' : 'src'),
         filename: debug ? '[name].[hash].js' : '[name].[chunkhash].js'
     },
     resolve: {
@@ -45,56 +61,34 @@ var config = {
     externals: {
         config: 'config'
     },
+    performance: {
+        // maxEntrypointSize: 400000,
+        hints: false
+    },
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
-                options: {
-                    presets: [
-                        [
-                            'env',
-                            {
-                                targets: {
-                                    browsers: ['chrome >= 54', 'firefox >= 50', 'edge > 1', 'safari >= 10', 'ie >= 11']
-                                },
-                                loose: true,
-                                modules: false,
-                                useBuiltIns: true,
-                                debug: false
-                            }
-                        ],
-                        'react',
-                        'stage-3'
-                    ],
-                    plugins: [
-                        'transform-runtime',
-                        'react-html-attrs',
-                        'transform-decorators-legacy',
-                        'transform-class-properties'
-                    ].concat(debug ? [] : ['transform-react-inline-elements'])
-                },
                 include: [path.resolve(__dirname, 'src')],
                 exclude: [/node_modules/]
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: { importLoaders: 1, sourceMap: true }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                sourceMap: debug,
-                                plugins: [require('autoprefixer')()]
-                            }
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: { importLoaders: 1, sourceMap: true }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: debug,
+                            plugins: [require('autoprefixer')()]
                         }
-                    ]
-                })
+                    }
+                ]
             },
             {
                 test: /\.(ttf|jpe?g|png|otf|ico|eot|svg|woff|woff2|gif?)(\?\S*)?$/,
@@ -104,19 +98,21 @@ var config = {
                 test: /\.html?$/,
                 loader: 'html-loader'
             },
-            {
-                test: /\.less$/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader!less-loader'
-                })
-            },
+            // {
+            //     test: /\.less$/,
+            //     use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
+            // },
             {
                 test: /\.s(a|c)ss$/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader!resolve-url-loader!sass-loader?sourceMap'
-                })
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'resolve-url-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: { sourceMap: true }
+                    }
+                ]
             }
         ]
     },
@@ -128,29 +124,12 @@ var config = {
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default']
         }),
-        new webpack.NamedModulesPlugin(),
-        new webpack.NamedChunksPlugin(chunk => {
-            if (chunk.name) {
-                return chunk.name;
-            }
-
-            return chunk.mapModules(m => path.relative(m.context, m.request)).join('_');
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: Infinity
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'runtime'
-        }),
-        new NameAllModulesPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             xhtml: true
         }),
-        new ExtractTextPlugin({
-            filename: 'app.bundle.css',
-            allChunks: true
+        new MiniCssExtractPlugin({
+            filename: '[name].bundle.css'
         })
     ],
     devServer: {
@@ -165,31 +144,7 @@ if (debug) {
             files: ['./src/**/*.html', './src/**/*.css', './src/**/*.less', './src/**/*.scss']
         })
     );
-
-    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
 } else {
-    config.plugins.push(
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production')
-            }
-        })
-    );
-
-    config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            parallel: true,
-            uglifyOptions: {
-                //mangle: false,
-                compress: {
-                    warnings: false
-                },
-                minimize: true
-            }
-        })
-    );
-
     config.plugins.push(
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.css$/g,
@@ -216,7 +171,7 @@ if (debug) {
 }
 
 /*
-if (process.env.NODE_DEPLOY) {
+if (deploy) {
     config.plugins.push(
         new WebpackShellPlugin({
             onBuildEnd: 'node copyFilesToDist.js'

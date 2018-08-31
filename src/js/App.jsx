@@ -5,6 +5,16 @@ import ReactDOM from 'react-dom';
 
 import { Route, HashRouter as Router, Switch, Redirect } from 'react-router-dom';
 
+import 'bootstrap';
+
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+
+library.add(fab, fas, far);
+
 import { Provider } from 'react-redux';
 import store from './store';
 
