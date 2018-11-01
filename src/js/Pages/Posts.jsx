@@ -7,6 +7,8 @@ import Loading from '@/Components/Loading';
 import { connect } from 'react-redux';
 import { fetchPosts } from '@/actions';
 
+import { Button } from '@rmwc/button';
+
 class Posts extends React.Component {
     refreshData = () => {
         this.props.requestPosts();
@@ -30,11 +32,11 @@ class Posts extends React.Component {
 
         return [
             <Header key="header" />,
-            <div key="content">
+            <div className="content mdc-theme--background">
                 <h1>Posts</h1>
-                <button onClick={this.refreshData}>
+                <Button raised onClick={this.refreshData}>
                     <FontAwesomeIcon icon="sync" size="xs" fixedWidth />
-                </button>
+                </Button>
                 {isLoading && <Loading />}
                 {!isLoading && content}
             </div>

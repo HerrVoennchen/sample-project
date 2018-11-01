@@ -5,7 +5,8 @@ import ReactDOM from 'react-dom';
 
 import { Route, HashRouter as Router, Switch, Redirect } from 'react-router-dom';
 
-import 'bootstrap';
+//import 'bootstrap';
+import 'rmwc';
 
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';

@@ -3,11 +3,13 @@
 @import './myBootstrap.scss';
 @import './loading.scss';
 
+@import '../../node_modules/material-components-web/dist/material-components-web.css';
+@import '../../node_modules/@material/top-app-bar/dist/mdc.top-app-bar.css';
+@import '../../node_modules/@rmwc/icon/icon.css';
+
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    margin: 1em;
-
     background-color: #eee;
 }
 
@@ -18,3 +20,18 @@ body {
     height: 90vh;
     color: $hover-color;
 }
+
+.mdc-top-app-bar {
+    margin-bottom: 10px;
+}
+
+.mdc-button,
+.mdc-toolbar,
+.mdc-top-app-bar {
+    background-color: $blue !important;
+}
+// .btn {
+//     -webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.3);
+//     -moz-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.3);
+//     box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.3);
+// }
