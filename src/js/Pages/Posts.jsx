@@ -7,7 +7,7 @@ import Loading from '@/Components/Loading';
 import { connect } from 'react-redux';
 import { fetchPosts } from '@/actions';
 
-import { Button } from '@rmwc/button';
+import { Button } from 'antd';
 
 class Posts extends React.Component {
     refreshData = () => {
@@ -34,7 +34,7 @@ class Posts extends React.Component {
             <Header key="header" />,
             <div className="content mdc-theme--background">
                 <h1>Posts</h1>
-                <Button raised onClick={this.refreshData}>
+                <Button type="primary" onClick={this.refreshData}>
                     <FontAwesomeIcon icon="sync" size="xs" fixedWidth />
                 </Button>
                 {isLoading && <Loading />}

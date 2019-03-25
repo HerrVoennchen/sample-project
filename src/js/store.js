@@ -10,9 +10,9 @@ import config from 'config';
 
 let middleware = undefined;
 if (config.debug) {
-    middleware = composeWithDevTools(applyMiddleware(promise(), thunk, createLogger()));
+    middleware = composeWithDevTools(applyMiddleware(promise, thunk, createLogger()));
 } else {
-    middleware = applyMiddleware(promise(), thunk);
+    middleware = applyMiddleware(promise, thunk);
 }
 
 export default createStore(reducers, middleware);

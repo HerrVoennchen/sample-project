@@ -98,10 +98,19 @@ var config = {
                 test: /\.html?$/,
                 loader: 'html-loader'
             },
-            // {
-            //     test: /\.less$/,
-            //     use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
-            // },
+            {
+                test: /\.less$/,
+                use: [
+                    debug ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            javascriptEnabled: true
+                        }
+                    }
+                ]
+            },
             {
                 test: /\.s(a|c)ss$/,
                 use: [
