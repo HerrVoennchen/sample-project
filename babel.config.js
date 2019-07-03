@@ -8,6 +8,7 @@ module.exports = {
                 targets: {
                     browsers: ['last 2 versions'] //['chrome >= 60', 'firefox ESR', 'edge > 13', 'safari >= 10', 'ie >= 11']
                 },
+                corejs: 2,
                 loose: true,
                 modules: false,
                 useBuiltIns: 'entry',
@@ -17,7 +18,7 @@ module.exports = {
         '@babel/react'
     ],
     plugins: [
-        '@babel/transform-runtime',
+        ['@babel/transform-runtime', { corejs: 2 }],
         'react-html-attrs',
         'transform-class-properties',
         '@babel/proposal-json-strings',

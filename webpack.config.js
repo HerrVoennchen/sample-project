@@ -1,6 +1,5 @@
 var webpack = require('webpack');
 var path = require('path');
-var WatchLiveReloadPlugin = require('webpack-watch-livereload-plugin');
 var WebpackShellPlugin = require('webpack-shell-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -21,7 +20,7 @@ var config = {
     mode: debug ? 'development' : 'production',
     context: __dirname,
     devtool: 'source-map',
-    entry: { app: ['@babel/polyfill', './src/js/App.jsx'] },
+    entry: { app: './src/js/App.jsx' },
     optimization: {
         usedExports: true,
         concatenateModules: true,
@@ -147,13 +146,7 @@ var config = {
     }
 };
 
-if (debug) {
-    config.plugins.push(
-        new WatchLiveReloadPlugin({
-            files: ['./src/**/*.html', './src/**/*.css', './src/**/*.less', './src/**/*.scss']
-        })
-    );
-} else {
+if (!debug) {
     config.plugins.push(
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.css$/g,

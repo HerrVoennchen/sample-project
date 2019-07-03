@@ -25,13 +25,15 @@ class Posts extends React.Component {
         let { isLoading, posts } = this.props;
         let content = '';
 
+        console.log(this.props);
+
         if (posts) {
             content = posts.map(item => <li key={item.id}>{item.title}</li>);
             content = <ul>{content}</ul>;
         }
 
         return [
-            <Header key="header" />,
+            <Header key="header" test="bla" />,
             <div className="content mdc-theme--background">
                 <h1>Posts</h1>
                 <Button type="primary" onClick={this.refreshData}>
